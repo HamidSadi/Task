@@ -1,0 +1,15 @@
+{
+  "ended_at": "20251022-142959",
+  "metrics": {
+    "accuracy": 1.0
+  },
+  "params": {
+    "learning_rate": 0.25,
+    "n_estimators": 80,
+    "strategy": "gradient_boosting"
+  },
+  "started_at": "20251022-142959",
+  "tags": {
+    "algorithm": "gradient_boosting"
+  }
+}

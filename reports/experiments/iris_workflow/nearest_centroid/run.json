@@ -1,0 +1,13 @@
+{
+  "ended_at": "20251022-142957",
+  "metrics": {
+    "accuracy": 1.0
+  },
+  "params": {
+    "strategy": "nearest_centroid"
+  },
+  "started_at": "20251022-142957",
+  "tags": {
+    "algorithm": "nearest_centroid"
+  }
+}
