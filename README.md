@@ -1,22 +1,20 @@
 # Iris Insights
 
-Iris Insights is a compact yet polished data science style project designed to
-highlight an end-to-end workflow while remaining fully runnable in restricted
-environments. The project synthesises an Iris-like dataset, performs lightweight
-feature engineering, trains a simple classifier, and exports evaluation
-artefacts — all with nothing more than the Python standard library.
+Iris Insights is a compact yet polished data science project designed to highlight
+end-to-end workflow skills for a portfolio-ready GitHub repository. The project
+uses the classic Iris dataset to demonstrate exploratory data analysis (EDA),
+feature engineering, model training, and automated reporting.
 
 ## Project Structure
 
 ```
 .
 ├── notebooks/
-│   └── iris_analysis.ipynb      # Narrative analysis and portfolio talking points
+│   └── iris_analysis.ipynb      # Narrative analysis and visualisations
 ├── reports/
-│   └── figures/                 # Automatically generated text-based summaries
+│   └── figures/                 # Automatically generated plots
 ├── scripts/
-│   ├── api_server.py            # Lightweight HTTP API exposing model predictions
-│   └── run_pipeline.py          # End-to-end training, logging, and reporting script
+│   └── run_pipeline.py          # End-to-end training and reporting script
 ├── src/iris_insights/           # Reusable Python package
 │   ├── data.py
 │   ├── evaluation.py
@@ -28,46 +26,28 @@ artefacts — all with nothing more than the Python standard library.
 
 ## Getting Started
 
-1. **(Optional) create a virtual environment**
+1. **Install dependencies**
 
    ```bash
    python -m venv .venv
    source .venv/bin/activate
+   pip install -e .
    ```
 
 2. **Run the automated pipeline**
-
-   No extra packages are required. Execute the workflow directly:
 
    ```bash
    python scripts/run_pipeline.py
    ```
 
-   The script now benchmarks the nearest centroid baseline alongside
-   handcrafted random forest and gradient boosting ensembles. Every run logs
-   parameters, metrics, and the classification report to
-   `reports/experiments/<experiment>/<run>/` in an MLflow-inspired format. A
-   high-level summary plus correlation and pairwise statistics remain
-   available under `reports/`.
+   The script saves a text report summarising the model performance in
+   `reports/model_report.txt` and exports figures to `reports/figures/`.
 
-3. **Serve real-time predictions** *(optional)*
+3. **Explore the notebook**
 
-   Start a lightweight HTTP API that trains the random forest ensemble at
-   launch and exposes `/predict` and `/health` endpoints:
-
-   ```bash
-   python scripts/api_server.py
-   ```
-
-   Send feature dictionaries (matching the Iris measurements) to
-   `http://localhost:8000/predict` and receive numeric and human-readable
-   species predictions in the response payload.
-
-4. **Explore the notebook** *(optional)*
-
-   Open `notebooks/iris_analysis.ipynb` for a high-level walkthrough of the
-   modelling story. The notebook references the generated artefacts and suggests
-   extensions that can be discussed in a portfolio or interview setting.
+   Open `notebooks/iris_analysis.ipynb` to follow the exploratory narrative. The
+   notebook walks through the project motivation, visualisations, and modelling
+   decisions.
 
 ## Testing
 
@@ -79,14 +59,12 @@ pytest
 
 ## Why This Project Stands Out
 
-- **Offline friendly**: Synthetic data generation, ensemble modelling, logging,
-  and API deployment rely solely on the Python standard library, so the project
-  runs without internet access or PyPI.
+- **Reproducible**: Deterministic data loading via `scikit-learn` with clear
+  preprocessing steps and configuration.
 - **Well-documented**: Modularised code and narrative notebook explain each
   decision, making it easy for reviewers to follow.
-- **Actionable artefacts**: Automated text summaries of correlations, class
-  performance, and pipeline configuration demonstrate analytical depth even
-  without graphical backends.
+- **Visual and analytical**: Automated figure generation and detailed
+  performance reporting demonstrate both storytelling and technical depth.
 
-Feel free to extend the project with richer models, experiment tracking, or web
-visualisations to further showcase your skills.
+Feel free to extend the project with additional models, experiment tracking, or
+deployment artifacts to further showcase your skills.

@@ -1,65 +1,53 @@
-"""Feature engineering helpers without external dependencies."""
+"""Feature engineering helpers."""
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, Iterable, List, Sequence, Tuple
-import math
-import statistics
+from dataclasses import dataclass
+from typing import Iterable, Tuple
 
-from .data import FEATURE_NAMES
+import numpy as np
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler
 
 
-@dataclass
+@dataclass(frozen=True)
 class FeaturePipeline:
-    """Simple z-score normalisation pipeline."""
+    """Wraps a Scikit-Learn column transformer for consistent preprocessing."""
 
-    feature_names: Tuple[str, ...]
-    means: Dict[str, float] = field(default_factory=dict)
-    stds: Dict[str, float] = field(default_factory=dict)
+    transformer: ColumnTransformer
 
     @classmethod
-    def default(cls, columns: Iterable[str] = FEATURE_NAMES) -> "FeaturePipeline":
-        return cls(tuple(columns))
+    def default(cls, columns: Iterable[str]) -> "FeaturePipeline":
+        """Create the default feature pipeline for numeric columns."""
 
-    def fit_transform(self, features: Sequence[Dict[str, float]]) -> List[List[float]]:
-        matrix = self._to_matrix(features)
-        self._fit_statistics(matrix)
-        return [self._standardise(row) for row in matrix]
+        transformer = ColumnTransformer(
+            transformers=[
+                (
+                    "numeric",
+                    StandardScaler(),
+                    list(columns),
+                )
+            ],
+            remainder="passthrough",
+        )
+        return cls(transformer)
 
-    def transform(self, features: Sequence[Dict[str, float]]) -> List[List[float]]:
-        if not self.means or not self.stds:
-            raise ValueError("Pipeline must be fitted before calling transform().")
-        matrix = self._to_matrix(features)
-        return [self._standardise(row) for row in matrix]
+    def fit_transform(self, features: pd.DataFrame) -> np.ndarray:
+        """Fit the transformer and return the transformed array."""
 
-    def _to_matrix(self, features: Sequence[Dict[str, float]]) -> List[List[float]]:
-        return [[row[name] for name in self.feature_names] for row in features]
+        return self.transformer.fit_transform(features)
 
-    def _fit_statistics(self, matrix: Sequence[Sequence[float]]) -> None:
-        for col_index, name in enumerate(self.feature_names):
-            column = [row[col_index] for row in matrix]
-            mean = statistics.fmean(column)
-            std = statistics.pstdev(column)
-            self.means[name] = mean
-            self.stds[name] = std if not math.isclose(std, 0.0) else 1.0
+    def transform(self, features: pd.DataFrame) -> np.ndarray:
+        """Transform new feature data."""
 
-    def _standardise(self, row: Sequence[float]) -> List[float]:
-        transformed: List[float] = []
-        for idx, name in enumerate(self.feature_names):
-            value = row[idx]
-            transformed.append((value - self.means[name]) / self.stds[name])
-        return transformed
+        return self.transformer.transform(features)
 
 
-def split_features_target(dataset: Sequence[Dict[str, float | int | str]]) -> tuple[List[Dict[str, float]], List[int]]:
-    """Split dataset dictionaries into features and numeric targets."""
+def split_features_target(dataset: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
+    """Split the dataset into features and target."""
 
-    feature_dicts: List[Dict[str, float]] = []
-    targets: List[int] = []
-    for row in dataset:
-        feature_dicts.append({name: float(row[name]) for name in FEATURE_NAMES})
-        targets.append(int(row["species"]))
-    return feature_dicts, targets
-
-
-__all__ = ["FeaturePipeline", "split_features_target"]
+    features = dataset.drop(columns=["species", "species_name"], errors="ignore")
+    target = dataset.get("species")
+    if target is None:
+        raise KeyError("Dataset must include a 'species' column")
+    return features, target
