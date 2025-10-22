@@ -1,0 +1,17 @@
+## setosa
+sepal_length: mean=4.998 min=4.702 max=5.299 std=0.171
+sepal_width: mean=3.503 min=3.304 max=3.691 std=0.121
+petal_length: mean=1.324 min=0.807 max=1.991 std=0.328
+petal_width: mean=0.208 min=-0.092 max=0.488 std=0.162
+
+## versicolor
+sepal_length: mean=5.970 min=5.706 max=6.242 std=0.169
+sepal_width: mean=2.799 min=2.615 max=2.997 std=0.115
+petal_length: mean=4.460 min=3.907 max=5.080 std=0.355
+petal_width: mean=1.315 min=1.007 max=1.583 std=0.174
+
+## virginica
+sepal_length: mean=6.519 min=6.205 max=6.784 std=0.186
+sepal_width: mean=3.017 min=2.824 max=3.198 std=0.109
+petal_length: mean=5.451 min=4.909 max=6.093 std=0.334
+petal_width: mean=2.010 min=1.711 max=2.294 std=0.163

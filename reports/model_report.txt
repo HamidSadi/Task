@@ -1,0 +1,18 @@
+Iris Insights Model Report
+===========================
+
+Correlation matrix saved to: reports/figures/correlation_matrix.txt
+Pairwise summary saved to: reports/figures/pairwise_summary.txt
+
+Experiment Summary:
+- nearest_centroid: accuracy=1.000
+  params: {'strategy': 'nearest_centroid'}
+  confusion matrix: reports/figures/confusion_matrix_nearest_centroid.txt
+- random_forest: accuracy=1.000
+  params: {'n_estimators': 25, 'max_depth': 4, 'seed': 99, 'strategy': 'random_forest'}
+  confusion matrix: reports/figures/confusion_matrix_random_forest.txt
+- gradient_boosting: accuracy=1.000
+  params: {'n_estimators': 80, 'learning_rate': 0.25, 'strategy': 'gradient_boosting'}
+  confusion matrix: reports/figures/confusion_matrix_gradient_boosting.txt
+
+See reports/experiments for per-run classification reports and metrics.

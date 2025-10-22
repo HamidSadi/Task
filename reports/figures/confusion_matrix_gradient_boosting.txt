@@ -1,0 +1,4 @@
+actual\predicted,setosa,versicolor,virginica
+setosa,50,0,0
+versicolor,0,50,0
+virginica,0,0,50
